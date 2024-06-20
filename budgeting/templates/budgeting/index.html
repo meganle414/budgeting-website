@@ -1,0 +1,13 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'budgeting/style.css' %}">
+
+{% if latest_transaction_list %}
+    <ul>
+    {% for transaction in latest_transaction_list %}
+        <li><a href="{% url 'budgeting:detail' tranasaction.id %}">{{ transaction.transaction_text }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No transactions are available.</p>
+{% endif %}
