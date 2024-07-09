@@ -8,7 +8,7 @@ import plaid
 from uuid import uuid4
 from .models import User
 from .utils import get_plaid_client
-from .tasks import get_transactions, get_accounts, get_access_token
+from .tasks import get_public_token, get_transactions, get_accounts, get_access_token
 
 
 class RegisterUserSerializer(serializers.ModelSerializer):
@@ -16,7 +16,7 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         required=True,
         validators=[UniqueValidator(queryset=User.objects.all())]
     )
-    password = serializers.CharField(max_length=8)
+    password = serializers.CharField(max_length=50)
 
     class Meta:
         model = User
@@ -27,8 +27,8 @@ class RegisterUserSerializer(serializers.ModelSerializer):
 
 
 class UserLoginSerializer(serializers.ModelSerializer):
-    email = serializers.CharField()
-    password = serializers.CharField()
+    email = serializers.EmailField(max_length=255)
+    password = serializers.CharField(max_length=50)
     token = serializers.CharField(required=False, read_only=True)
 
     def validate(self, data):
@@ -65,36 +65,40 @@ class UserLoginSerializer(serializers.ModelSerializer):
 
 
 class UserLogoutSerializer(serializers.ModelSerializer):
-    token = serializers.CharField()
-    status = serializers.CharField(required=False, read_only=True)
+    email = serializers.EmailField(max_length=255)
+    password = serializers.CharField(max_length=50)
+    # token = serializers.CharField(required=False, read_only=True)
 
     def validate(self, data):
-        token = data.get("token", None)
-        print(token)
+        email = data.get('email', None)
+        password = data.get('password', None)
+        if not email and not password:
+            raise ValidationError('Details not entered.')
+
         user = None
         try:
-            user = User.objects.get(token=token)
+            user = User.objects.get(email=email, password=password)
             if not user.is_logged_in:
-                raise ValidationError("User is not logged in.")
-        except Exception as e:
-            raise ValidationError(str(e))
+                raise ValidationError('User already logged out.')
+        except ObjectDoesNotExist:
+            raise ValidationError('User credentials are not correct.')
+
         user.is_logged_in = False
-        user.token = ""
-        user.access_token = ""
+        data['token'] = ''
+        # data['token'] = uuid4()
+        user.token = data['token']
         user.save()
-        data['status'] = "User is logged out."
         return data
 
     class Meta:
         model = User
         fields = (
-            'token',
-            'status',
+            'email',
+            'password',
         )
 
-
 class TokenExchangeSerializer(serializers.ModelSerializer):
-    email = serializers.CharField(max_length=100)
+    email = serializers.EmailField(max_length=255)
     public_token = serializers.CharField()
     item_id = serializers.CharField(required=False, read_only=True)
     access_token = serializers.CharField(required=False, read_only=True)
@@ -145,7 +149,7 @@ class TokenExchangeSerializer(serializers.ModelSerializer):
 
 
 class GetTransactionsSerializer(serializers.Serializer):
-    email = serializers.CharField(max_length=100)
+    email = serializers.EmailField(max_length=255)
     start_date = serializers.DateField(format="%Y-%m-%d")
     end_date = serializers.DateField(format="%Y-%m-%d")
     transactions = serializers.JSONField(required=False, read_only=True)
@@ -204,7 +208,7 @@ class GetTransactionsSerializer(serializers.Serializer):
 
 
 class GetAccountSerializer(serializers.Serializer):
-    email = serializers.CharField(max_length=100)
+    email = serializers.EmailField(max_length=255)
     accounts = serializers.JSONField(required=False, read_only=True)
     item = serializers.JSONField(required=False, read_only=True)
     numbers = serializers.JSONField(required=False, read_only=True)
@@ -248,7 +252,7 @@ class GetAccountSerializer(serializers.Serializer):
 
 
 class TransactionUpdateSerializer(serializers.ModelSerializer):
-    email = serializers.CharField()
+    email = serializers.EmailField(max_length=255)
     transaction_id = serializers.CharField()
     transaction = serializers.JSONField(required=False, read_only=True)
 
@@ -290,7 +294,7 @@ class TransactionUpdateSerializer(serializers.ModelSerializer):
         else:
             send_mail(
                 'Transaction NOT Successful',
-                'Your Transaction was not successful.Currently pending.',
+                'Your Transaction was not successful. Currently pending.',
                 'noreply@example.com',
                 [email],
                 fail_silently=True,

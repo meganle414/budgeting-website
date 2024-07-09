@@ -3,4 +3,3 @@ PLAID_CLIENT_ID ='6668e8b38bebaf001bb8ef44'
 PLAID_SECRET = ''
 PLAID_PRODUCTS = ['transactions']
 PLAID_COUNTRY_CODES = ['US']
-PLAID_ENV = 'plaid.Environment.Sandbox'

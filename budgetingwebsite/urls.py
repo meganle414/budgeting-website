@@ -15,18 +15,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import path
+from budgeting import views
 
 urlpatterns = [
-    path("", include("budgeting.urls")),
-    path("polls/", include("polls.urls")),
     path("admin/", admin.site.urls),
-    path("__debug__/", include("debug_toolbar.urls")),
-    # path('register-user/', views.RegisterUser.as_view(), name="register"),
-    # path('login/', views.Login.as_view(), name="login"),
-    # path('logout/', views.Logout.as_view(), name="logout"),
-    # path('token-exchange/', views.TokenExchange.as_view(), name="token-exchange"),
-    # path('get-transactions/', views.GetTransactions.as_view(), name="transactions"),
-    # path('get-accounts/', views.GetAccounts.as_view(), name="account"),
-    # path('update-transaction/', views.TransactionUpdate.as_view(), name="update-transaction-hook"),
+    path('register-user/', views.RegisterUser.as_view(), name="register"),
+    path('login/', views.Login.as_view(), name="login"),
+    path('logout/', views.Logout.as_view(), name="logout"),
+    path('token-exchange/', views.TokenExchange.as_view(), name="token-exchange"),
+    path('get-transactions/', views.GetTransactions.as_view(), name="transactions"),
+    path('get-accounts/', views.GetAccounts.as_view(), name="account"),
+    path('update-transaction/', views.TransactionUpdate.as_view(), name="update-transaction-hook"),
 ]

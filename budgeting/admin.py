@@ -1,33 +1,12 @@
 from django.contrib import admin
+from .models import User
 
-from .models import Transaction
-
-
-# class ChoiceInline(admin.TabularInline):
-#     model = Choice
-#     extra = 3
-
-
-# class QuestionAdmin(admin.ModelAdmin):
-#     fieldsets = [
-#         (None, {"fields": ["question_text"]}),
-#         ("Date information", {"fields": ["pub_date"], "classes": ["collapse"]}),
-#     ]
-#     inlines = [ChoiceInline]
-#     list_display = ["question_text", "pub_date", "was_published_recently"]
-#     list_filter = ["pub_date"]
-#     search_fields = ["question_text"]
-
-class TransactionAdmin(admin.ModelAdmin):
+class UserAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {"fields": ["transaction_text"]}),
-        ("Date information", {"fields": ["pub_date"], "classes": ["collapse"]}),
+        (None, {"fields": ["email", "password", "is_logged_in", "is_active", "token", "access_token"]}),
     ]
-    # inlines = [ChoiceInline]
-    list_display = ["transaction_text", "transaction_amount", "pub_date", "was_published_recently"]
-    list_filter = ["pub_date", "transaction_text", "transaction_amount"]
-    search_fields = ["transaction_text", "transaction_amount"]
+    list_display = ["email", "password", "is_logged_in", "is_active", "token", "access_token"]
+    list_filter = ["email", "token", "access_token"]
+    search_fields = ["email", "token", "access_token"]
 
-
-# admin.site.register(Question, QuestionAdmin)
-admin.site.register(Transaction, TransactionAdmin)
+admin.site.register(User, UserAdmin)
