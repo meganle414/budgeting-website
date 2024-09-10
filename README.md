@@ -56,7 +56,7 @@ Open Command Prompt
 Start Celery Service
 ```python -m celery -A budgetingwebsite.celery_app worker -l info```
 
-![Screenshot](https://github.com/meganle414/budgeting-website/blob/main/images/test_results.png)?raw=true)
+![Screenshot](https://github.com/meganle414/budgeting-website/blob/main/images/test_results.png?raw=true)
 
 <p align="right">(<a href="#budgeting-website">back to top</a>)</p>
 
