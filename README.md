@@ -38,7 +38,9 @@
 <p align="right">(<a href="#budgeting-website">back to top</a>)</p>
 
 ### Budgeting Website
-Install dependencies
+Install dependencies all together
+```pip install```
+Or install them all individually
 ```pip install django```
 ```pip install celery```
 ```pip install plaid-python```
