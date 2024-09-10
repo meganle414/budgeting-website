@@ -38,25 +38,25 @@
 <p align="right">(<a href="#budgeting-website">back to top</a>)</p>
 
 ### Budgeting Website
-Install dependencies all together
-```pip install```
-Or install them all individually
-```pip install django```
-```pip install celery```
-```pip install plaid-python```
-```pip install amqp```
-Make migrations
-```python manage.py makemigrations```
-```python manage.py migrate```
-Run the server with
-```python manage.py runserver```
-Run the test with
-```python manage.py test budgeting```
-Open Command Prompt
-```cd C:\Users\YOUR_USERNAME_HERE\Downloads\rabbitmq-server-windows-3.13.3\rabbitmq_server-3.13.3\sbin```
-```rabbitmq-server.bat```
-Start Celery Service
-```python -m celery -A budgetingwebsite.celery_app worker -l info```
+Install dependencies all together<br>
+```pip install```<br>
+Or install them all individually<br>
+```pip install django```<br>
+```pip install celery```<br>
+```pip install plaid-python```<br>
+```pip install amqp```<br>
+Make migrations<br>
+```python manage.py makemigrations```<br>
+```python manage.py migrate```<br>
+Run the server with<br>
+```python manage.py runserver```<br>
+Run the test with<br>
+```python manage.py test budgeting```<br>
+Open Command Prompt<br>
+```cd C:\Users\YOUR_USERNAME_HERE\Downloads\rabbitmq-server-windows-3.13.3\rabbitmq_server-3.13.3\sbin```<br>
+```rabbitmq-server.bat```<br>
+Start Celery Service<br>
+```python -m celery -A budgetingwebsite.celery_app worker -l info```<br>
 
 ![Screenshot](https://github.com/meganle414/budgeting-website/blob/main/images/test_results.png?raw=true)
 
